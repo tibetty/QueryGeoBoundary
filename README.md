@@ -1,2 +1,24 @@
 # QueryGeoBoundary
-A Node.js Module to Query the Geo (Administrative Area) Boundary from OSM nominatim and/or overpass
+A Node.js Module to Query the Geo (Administrative Area) Boundary from OSM nominatim and/or overpass (with a RegExp based XML parser & geojson constructor for boundary polygon/multi-polygon, 3x faster than osm2geojson)
+
+# Usage
+var queryBoundary = require('query-boundary');
+queryBoundary('<geo unit name to query>').then(boundaries => {
+  // your post-processing here
+}).catch(err => {
+  // your error handling here
+});
+
+# API
++ prototype: queryBoundary(geoName, options) where
+  - geoName: the the geo name you want to obtain its boundary
+  - options: only support "source" option right now, you can use {source: 'overpass'} to mandata it to go through overpass (very slow, and has concurrency limitation), by default (and highly-recommended) it will use nominatim service.
++ return: array of osm place with boundary geojson (the place attributes include displayname, lat/lon, boundingbox, and the boundary geojson under "geojson"), a typical result is as below:
+  [{"place_id":"158973269","licence":"Data © OpenStreetMap contributors, ODbL 1.0. http:\/\/www.openstreetmap.org\/copyright","osm_type":"relation","osm_id":"3468769","boundingbox":["35.7163774","36.2834811","118.9952393","119.7232973"],"lat":"35.9989034","lon":"119.342173467495","display_name":"诸城市, 潍坊市, 山东省, 中国","class":"boundary","type":"administrative","importance":0.43599614036271,"icon":"https:\/\/nominatim.openstreetmap.org\/images\/mapicons\/poi_boundary_administrative.p.20.png","geojson":{"type":"Polygon","coordinates":[[[118.9952393,36.0120809],...,[118.9952393,36.0120809]]]}}]
++ reminder: 'coz it's very common for an administrative uint have the same name with others, if you want to get the exact boundary of an specific place, provide as much as possible hierarchical adminstrative information in name, e.g., using "北海道池田町" rather than "池田町", or you can solve the ambiguity by human interference.
+
+# Node.JS version
+  - 4.x+ with majore ES 6 feature supports
+  
+# Dependency
+  request - basic version and basic function (can be easily replaced by built-in http module)
