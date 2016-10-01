@@ -10,7 +10,7 @@ queryGeoBoundary('&lt;geo unit name to query&gt;').then(boundaries &#61;&gt; {</
 });
 
 # API
-+ <b>Prototype</b>: queryBoundary(geoName, options) where
++ <b>Prototype</b>: queryGeoBoundary(geoName, options)
   - <i>geoName</i>: the the geo name you want to obtain its boundary
   - <i>options</i>: optional. only support "source" option right now, you can use {source: 'overpass'} to mandata it to go through overpass (very slow, and has concurrency limitation), by default (and highly-recommended) it will use nominatim service.
 + <b>Return</b>: array of osm place with boundary geojson (the place attributes include displayname, lat/lon, boundingbox, and the boundary geojson under "geojson"), a typical result is as below:<br/>
