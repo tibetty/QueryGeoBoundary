@@ -21,4 +21,4 @@ queryBoundary('<geo unit name to query>').then(boundaries => {
   - 4.x+ with majore ES 6 feature supports
   
 # Dependency
-  request - basic version and basic function (can be easily replaced by built-in http module)
+  - request - basic version and basic function (can be easily replaced by built-in http module)
