@@ -25,7 +25,7 @@ queryGeoBoundary('&lt;geo unit name to query&gt;').then(boundaries &#61;&gt; {</
   "importance":0.43599614036271,
   "icon":"https://nominatim.openstreetmap.org/images/mapicons/poi_boundary_administrative.p.20.png",
   "<b>geojson</b>":{"type":"Polygon","coordinates":[[[118.9952393,36.0120809],...,[118.9952393,36.0120809]]]}}]
-+ <b>Notice</b>: 'coz it's very common for an administrative uint has the same name with others, if you want to get the boundary of exactly that place, please supply as much as possible hierarchical adminstrative information in name, e.g., using "Ikeda, Hokkaido" rather than "Ikeda", or you can solve the ambiguity by introducing human interference.
++ <b>Notice</b>: 'coz it's very common for an administrative uint has the same name with others, if you want to get the boundary of exactly that place, please supply as much as possible hierarchical adminstrative information in name, e.g., using "Ikeda, Hokkaido" rather than "Ikeda", or you can solve this kind of ambiguity by introducing human interference.
 
 # Node.JS version
   - 4.x+ with majore ES 6 features supports
