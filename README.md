@@ -3,7 +3,7 @@ A Node.js Module to Query the Geo (Administrative Area) Boundary from OSM nomina
 
 # Usage
 var queryGeoBoundary = require('query-geo-boundary');</br>
-queryGeoBoundary('&lt;geo unit name to query&gt;').then(boundaries &#61;&gt;{</br>
+queryGeoBoundary('&lt;geo unit name to query&gt;').then(boundaries &#61;&gt; {</br>
   // your post-processing here</br>
 }).catch(err &#61;&gt; {</br>
   // your error handling here</br>
