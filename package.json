@@ -1,0 +1,7 @@
+{
+  "name": "query-boundary",
+  "version": "0.0.9",
+  "dependencies": {
+    "request": "^2.75.0"
+  }
+}
