@@ -28,7 +28,7 @@ queryGeoBoundary('&lt;geo unit name to query&gt;').then(boundaries &#61;&gt; {</
 + <b>Notice</b>: 'coz it's very common for an administrative uint has the same name with others, if you want to get the boundary of exactly that place, please supply as much as possible hierarchical adminstrative information in name, e.g., using "Ikeda, Hokkaido" rather than "Ikeda", or you can solve this kind of ambiguity by introducing human interference.
 
 # Node.JS version
-  - 4.x+ with majore ES 6 features supports
+  - 4.x+ with major ES 6 features supports
   
 # Dependency
   - request - basic version and basic function (can be easily replaced by built-in http module)
