@@ -3,5 +3,27 @@
   "version": "0.0.9",
   "dependencies": {
     "request": "^2.75.0"
-  }
+  },
+  "description": "A Node.js module to query the geo (administrative area) boundary from OSM nominatim and/or overpass (with a RegExp & Map based XML parser & geojson builder for geo boundary re-construction, <b>3X</b> faster than <a href=\"https://github.com/tyrasd/osmtogeojson\">osmtogeojson</a> only, and almost <b>7X</b> faster than <a href=\"https://github.com/jindw/xmldom\">xmldom</a>, osmtogejson in combination to accomplish the same task)",
+  "main": "query-geo-boundary.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tibetty/QueryGeoBoundary.git"
+  },
+  "keywords": [
+    "map",
+    "geo",
+    "boundary",
+    "polygon",
+    "geojson"
+  ],
+  "author": "tibetty",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/tibetty/QueryGeoBoundary/issues"
+  },
+  "homepage": "https://github.com/tibetty/QueryGeoBoundary#readme"
 }
