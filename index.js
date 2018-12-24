@@ -1,9 +1,13 @@
 ﻿#!/usr/bin/env node
 'use strict';
 
-var request = require('request');
+module.exports = (name, options) => {
+	const request = require('request'),
+		http = require('http');
 
-module.exports = function(name, options) {
+	// minic an access from a browser as as to avoid foribidden
+	const headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36'};
+	
 	// a slower way - query from overpass
 	function _queryFromOverpass(name) {
 		function _getAreas(name) {
@@ -13,7 +17,8 @@ module.exports = function(name, options) {
 					qs: {
 						format: 'json',
 						q: `${name}`
-					}
+					},
+					headers
 				};
 				
 				request(options, (error, response, body) => {
@@ -35,7 +40,8 @@ module.exports = function(name, options) {
 					method: 'post',
 					form: {
 						data: `area(${areaId});rel(pivot);out geom;`
-					}
+					},
+					headers
 				};
 				
 				request(options, (error, response, body) => {
@@ -45,25 +51,25 @@ module.exports = function(name, options) {
 							let outerWays = [], outerFirstMap = {}, outerLastMap = {};
 							let innerWays = [], innerFirstMap = {}, innerLastMap = {};
 							
-							let _first = function(a) { return a[0] };
-							let _last = function(a) { return a[a.length - 1] };
+							const _first = a => a[0];
+							const _last = a => a[a.length - 1];
 							
-							let _addToMap = function(m, k, v) {
+							function _addToMap(m, k, v) {
 								let a = m[k];
 								if (a) a.push(v);
 								else m[k] = [v];
-							};
+							}
 							
-							let _removeFromMap = function(m, k, v) {
+							function _removeFromMap(m, k, v) {
 								let a = m[k];
 								if (a) a.splice(a.indexOf(v), 1);
-							};
+							}
 							
-							let _getFromMap = function(m, k) {
+							function _getFromMap(m, k) {
 								let a = m[k];
 								if (a && a.length >= 1) return a[0];
 								else return null;
-							};
+							}
 							
 							let outerSegments = xmlBody.split(/(<member type="way" ref="\d+" role="outer">)/);
 							for (let i = 1; i < outerSegments.length; i += 2) {
@@ -93,14 +99,25 @@ module.exports = function(name, options) {
 							}
 							
 							// join outer ways to form outer polygons
-							let _isClosed = function(a) { return _first(a).toString() === _last(a).toString(); }
+							const _isClosed = a => _first(a).toString() === _last(a).toString();
+							
+							function _isClockwise(a) {
+								let m = a.reduce((last, v, idx) => a[last][0] > v[0] ? last : idx, 0);
+								let l = m <= 0? a.length - 1 : m - 1;
+								let r = m >= a.length - 1? 0 : m + 1;
+								let xa = a[l][0], xb = a[m][0], xc = a[r][0];
+								let ya = a[l][1], yb = a[m][1], yc = a[r][1];
+								let det = (xb - xa) * (yc - ya) - (xc - xa) * (yb - ya);
+								return det < 0;
+							}
+
 							let outerPolygons = [], innerPolygons = [];
 							let way = null;
 							while (way = outerWays.pop()) {
 								if (_isClosed(way)) {
+									if (_isClockwise(way)) way.reverse();
 									outerPolygons.push(way);
-								}
-								else {
+								} else {
 									let line = [];
 									let current = way;
 									let reversed = false;
@@ -123,17 +140,21 @@ module.exports = function(name, options) {
 											current = current.slice(1);
 										}
 									}
-									if (_isClosed(line))
+									// Points of an outerpolygon should be organized clockwise
+									if (_isClosed(line)) {
+										if (_isClockwise(line)) line.reverse();
 										outerPolygons.push(line);
+									}
 								}
 							}
+							
 							
 							// join inner ways to form outer polygons
 							while (way = innerWays.pop()) {
 								if (_isClosed(way)) {
+									if (!_isClockwise(way)) way.reverse();
 									innerPolygons.push(way);
-								}
-								else {
+								} else {
 									let line = [];
 									let current = way;
 									let reversed = false;
@@ -156,8 +177,11 @@ module.exports = function(name, options) {
 											current = current.slice(1);
 										}
 									}
-									if (_isClosed(line))
+									// Points of an innerpolygon should be organized clockwise
+									if (_isClosed(line)) {
+										if (!_isClockwise(line)) line.reverse();
 										innerPolygons.push(line);
+									}
 								}
 							}
 							
@@ -245,7 +269,8 @@ module.exports = function(name, options) {
 					format: 'json',
 					q: `${name}`,
 					polygon_geojson: 1
-				}
+				},
+				headers
 			};
 			request(options, (error, response, body) => {
 				if (!error && response.statusCode === 200) {
