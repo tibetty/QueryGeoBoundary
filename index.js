@@ -43,7 +43,7 @@ module.exports = (name, options) => {
 					},
 					headers
 				};
-				
+
 				request(options, (error, response, body) => {
 					if (!error && response.statusCode === 200) {
 						let _parseBoundary = function(xmlBody) {
@@ -68,7 +68,7 @@ module.exports = (name, options) => {
 							function _getFromMap(m, k) {
 								let a = m[k];
 								if (a && a.length >= 1) return a[0];
-								else return null;
+								return null;
 							}
 							
 							let outerSegments = xmlBody.split(/(<member type="way" ref="\d+" role="outer">)/);
@@ -99,12 +99,11 @@ module.exports = (name, options) => {
 							}
 							
 							// join outer ways to form outer polygons
-							const _isClosed = a => _first(a).toString() === _last(a).toString();
+							const _isRing = a => _first(a).toString() === _last(a).toString();
 							
 							function _isClockwise(a) {
-								let m = a.reduce((last, v, idx) => a[last][0] > v[0] ? last : idx, 0);
-								let l = m <= 0? a.length - 1 : m - 1;
-								let r = m >= a.length - 1? 0 : m + 1;
+								let m = a.reduce((last, v, current) => a[last][0] > v[0] ? last : current, 0);
+								let l = m <= 0? a.length - 1 : m - 1, r = m >= a.length - 1? 0 : m + 1;
 								let xa = a[l][0], xb = a[m][0], xc = a[r][0];
 								let ya = a[l][1], yb = a[m][1], yc = a[r][1];
 								let det = (xb - xa) * (yc - ya) - (xc - xa) * (yb - ya);
@@ -114,7 +113,7 @@ module.exports = (name, options) => {
 							let outerPolygons = [], innerPolygons = [];
 							let way = null;
 							while (way = outerWays.pop()) {
-								if (_isClosed(way)) {
+								if (_isRing(way)) {
 									if (_isClockwise(way)) way.reverse();
 									outerPolygons.push(way);
 								} else {
@@ -136,12 +135,12 @@ module.exports = (name, options) => {
 											outerWays.splice(outerWays.indexOf(current), 1);
 											_removeFromMap(outerFirstMap, _first(current).toString(), current);
 											_removeFromMap(outerLastMap, _last(current).toString(), current);
-											if (reversed) current = current.reverse();
+											if (reversed) current.reverse();
 											current = current.slice(1);
 										}
 									}
 									// Points of an outerpolygon should be organized clockwise
-									if (_isClosed(line)) {
+									if (_isRing(line)) {
 										if (_isClockwise(line)) line.reverse();
 										outerPolygons.push(line);
 									}
@@ -151,7 +150,7 @@ module.exports = (name, options) => {
 							
 							// join inner ways to form outer polygons
 							while (way = innerWays.pop()) {
-								if (_isClosed(way)) {
+								if (_isRing(way)) {
 									if (!_isClockwise(way)) way.reverse();
 									innerPolygons.push(way);
 								} else {
@@ -173,12 +172,12 @@ module.exports = (name, options) => {
 											innerWays.splice(outerWays.indexOf(current), 1);
 											_removeFromMap(innerFirstMap, _first(current).toString(), current);
 											_removeFromMap(innerLastMap, _last(current).toString(), current);
-											if (reversed) current = current.reverse();
+											if (reversed) current.reverse();
 											current = current.slice(1);
 										}
 									}
 									// Points of an innerpolygon should be organized clockwise
-									if (_isClosed(line)) {
+									if (_isRing(line)) {
 										if (!_isClockwise(line)) line.reverse();
 										innerPolygons.push(line);
 									}
@@ -186,7 +185,7 @@ module.exports = (name, options) => {
 							}
 							
 							// link inner polygons to outer containers
-							let _ptInsidePolygon = function(pt, polygon) {
+							function _ptInsidePolygon(pt, polygon) {
 								const lngIdx = 0, latIdx = 1;
 								let result = false;
 								for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
@@ -230,7 +229,15 @@ module.exports = (name, options) => {
 						
 						body = body.replace(/^\s+|\s+$/mg, '').replace(/[\n\r]/g, '');
 						try {
+							/*
+							let stime = new Date().getTime();
+							console.log(`_getBondary begins...`);
+							*/
 							resolve(_parseBoundary(body));
+							/*
+							let etime = new Date().getTime();
+							console.log(`---${etime - stime}ms cost by parseBoundary---`);
+							*/
 						} catch (e) {
 							reject(e);
 						}
