@@ -12,9 +12,9 @@ queryGeoBoundary(`${geo_name}`).then(boundaries => {
 ```
 
 # API
-**Prototype**: queryGeoBoundary(geoName, options)
+**Prototype**: `queryGeoBoundary(geoName, options)`
   - *geoName*: the the geo name you want to obtain its boundary
-  - *options*: optional. only support "source" option right now, you can use {source: 'overpass'} to mandata it to go through overpass (very slow, and has concurrency limitation), by default (and highly-recommended) it will use nominatim service.
+  - *options*: optional. only support *`source`* option right now, you can use *`{source: 'overpass'}`* to mandata it to go through *`overpass`* service (very slow, and has concurrency limitation), by default (and highly-recommended) it will use openstreetmap *`nominatim`* service.
 
 **Return**: an array of osm places with boundary geojson (the place attributes include displayname, lat/lon, boundingbox, and the boundary geojson under "geojson"), a typical result is as below:
 ```js
