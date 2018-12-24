@@ -1,5 +1,5 @@
 # QueryGeoBoundary
-A Node.js module to query the geo (administrative area) boundary from OSM nominatim and/or overpass (with a RegExp & Map based XML parser & geojson builder for geo boundary reconstruction, **3X** faster than *osmtogeojson*[osmtogeojson](https://github.com/tyrasd/osmtogeojson) only, and almost **7X** faster than *xmldom*[xmldom](https://github.com/jindw/xmldom), *osmtogeojson* in combination to accomplish the same task)
+A Node.js module to query the geo (administrative area) boundary from OSM nominatim and/or overpass (with a RegExp & Map based XML parser & geojson builder for geo boundary reconstruction, **3X** faster than [osmtogeojson](https://github.com/tyrasd/osmtogeojson) only, and almost **7X** faster than [xmldom](https://github.com/jindw/xmldom), *osmtogeojson* in combination to accomplish the same task)
 
 # Usage
 ```js
