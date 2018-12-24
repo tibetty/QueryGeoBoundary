@@ -2,12 +2,14 @@
 A Node.js module to query the geo (administrative area) boundary from OSM nominatim and/or overpass (with a RegExp & Map based XML parser & geojson builder for geo boundary re-construction, <b>3X</b> faster than <a href="https://github.com/tyrasd/osmtogeojson">osmtogeojson</a> only, and almost <b>7X</b> faster than <a href="https://github.com/jindw/xmldom">xmldom</a>, osmtogejson in combination to accomplish the same task)
 
 # Usage
-var queryGeoBoundary = require('query-geo-boundary');</br>
+```js
+const queryGeoBoundary = require('query-geo-boundary');</br>
 queryGeoBoundary('&lt;geo unit name to query&gt;').then(boundaries &#61;&gt; {</br>
   // your post-processing here</br>
 }).catch(err &#61;&gt; {</br>
   // your error handling here</br>
 });
+```
 
 # API
 + <b>Prototype</b>: queryGeoBoundary(geoName, options)
