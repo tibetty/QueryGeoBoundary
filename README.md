@@ -1,5 +1,5 @@
 # QueryGeoBoundary
-A Node.js module to query the geo (administrative area) boundary from OSM nominatim and/or overpass (with a RegExp & Map based XML parser & geojson builder for geo boundary re-construction, <b>3X</b> faster than <a href="https://github.com/tyrasd/osmtogeojson">osmtogeojson</a> only, and almost <b>7X</b> faster than <a href="https://github.com/jindw/xmldom">xmldom</a>, osmtogejson in combination to accomplish the same task)
+A Node.js module to query the geo (administrative area) boundary from OSM nominatim and/or overpass (with a RegExp & Map based XML parser & geojson builder for geo boundary reconstruction, **3X** faster than *osmtogeojson*[osmtogeojson](https://github.com/tyrasd/osmtogeojson) only, and almost **7X** faster than *xmldom*[xmldom](https://github.com/jindw/xmldom), *osmtogeojson* in combination to accomplish the same task)
 
 # Usage
 ```js
@@ -12,10 +12,12 @@ queryGeoBoundary(`${geo_name}`).then(boundaries => {
 ```
 
 # API
-+ <b>Prototype</b>: queryGeoBoundary(geoName, options)
-  - <i>geoName</i>: the the geo name you want to obtain its boundary
-  - <i>options</i>: optional. only support "source" option right now, you can use {source: 'overpass'} to mandata it to go through overpass (very slow, and has concurrency limitation), by default (and highly-recommended) it will use nominatim service.
-+ <b>Return</b>: an array of osm place with boundary geojson (the place attributes include displayname, lat/lon, boundingbox, and the boundary geojson under "geojson"), a typical result is as below:<br/>
+**Prototype**: queryGeoBoundary(geoName, options)
+  - *geoName*: the the geo name you want to obtain its boundary
+  - *options*: optional. only support "source" option right now, you can use {source: 'overpass'} to mandata it to go through overpass (very slow, and has concurrency limitation), by default (and highly-recommended) it will use nominatim service.
+
+**Return**: an array of osm places with boundary geojson (the place attributes include displayname, lat/lon, boundingbox, and the boundary geojson under "geojson"), a typical result is as below:
+```js
   [{"place_id":"158973269",
   "licence":"Data © OpenStreetMap contributors, ODbL 1.0. http://www.openstreetmap.org/copyright",
   "osm_type":"relation",
@@ -26,8 +28,9 @@ queryGeoBoundary(`${geo_name}`).then(boundaries => {
   "type":"administrative",
   "importance":0.43599614036271,
   "icon":"https://nominatim.openstreetmap.org/images/mapicons/poi_boundary_administrative.p.20.png",
-  "<b>geojson</b>":{"type":"Polygon","coordinates":[[[118.9952393,36.0120809],...,[118.9952393,36.0120809]]]}}]
-+ <b>Notice</b>: 'coz it's very common for an administrative uint has the same name with others, if you want to get the boundary of exactly that place, please supply as much as possible hierarchical adminstrative information in name, e.g., using "Ikeda, Hokkaido" rather than "Ikeda", or you can solve this kind of ambiguity by introducing human interference.
+  "geojson":{"type":"Polygon","coordinates":[[[118.9952393,36.0120809],...,[118.9952393,36.0120809]]]}}]
+```
+**Notice**: 'coz it's very common for an administrative uint has the same name with others, if you want to get the boundary of exactly that place, please supply as much as possible hierarchical adminstrative information in name, e.g., using "Ikeda, Hokkaido" rather than "Ikeda", or you can solve this kind of ambiguity by introducing human interference.
 
 # Node.JS version
   - 4.x+ with major ES 6 features supports
