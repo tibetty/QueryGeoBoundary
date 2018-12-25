@@ -1,11 +1,10 @@
-﻿#!/usr/bin/env node
-'use strict';
+﻿module.exports = (name, options) => {
+	'use strict';
 
-module.exports = (name, options) => {
 	const request = require('request'),
 		http = require('http');
 
-	// minic an access from a browser as as to avoid foribidden
+	// to minic accesses from a browser so as to avoid being blocked
 	const headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36'};
 	
 	// a slower way - query from overpass
@@ -46,7 +45,7 @@ module.exports = (name, options) => {
 
 				request(options, (error, response, body) => {
 					if (!error && response.statusCode === 200) {
-						let _parseBoundary = function(xmlBody) {
+						function _parseBoundary(xmlBody) {
 							// parse outer/inner ways
 							let outerWays = [], outerFirstMap = {}, outerLastMap = {};
 							let innerWays = [], innerFirstMap = {}, innerLastMap = {};
@@ -98,18 +97,19 @@ module.exports = (name, options) => {
 								}
 							}
 							
-							// join outer ways to form outer polygons
 							const _isRing = a => _first(a).toString() === _last(a).toString();
 							
-							function _isClockwise(a) {
+							function _isClockwise(a, xIdx, yIdx) {
+								xIdx = xIdx || 0, yIdx = yIdx || 1;
 								let m = a.reduce((last, v, current) => a[last][0] > v[0] ? last : current, 0);
 								let l = m <= 0? a.length - 1 : m - 1, r = m >= a.length - 1? 0 : m + 1;
-								let xa = a[l][0], xb = a[m][0], xc = a[r][0];
-								let ya = a[l][1], yb = a[m][1], yc = a[r][1];
+								let xa = a[l][xIdx], xb = a[m][xIdx], xc = a[r][xIdx];
+								let ya = a[l][yIdx], yb = a[m][yIdx], yc = a[r][yIdx];
 								let det = (xb - xa) * (yc - ya) - (xc - xa) * (yb - ya);
 								return det < 0;
 							}
 
+							// join outer ways to form outer polygons
 							let outerPolygons = [], innerPolygons = [];
 							let way = null;
 							while (way = outerWays.pop()) {
@@ -139,7 +139,7 @@ module.exports = (name, options) => {
 											current = current.slice(1);
 										}
 									}
-									// Points of an outerpolygon should be organized clockwise
+									// points of an outerpolygon should be organized counterclockwise
 									if (_isRing(line)) {
 										if (_isClockwise(line)) line.reverse();
 										outerPolygons.push(line);
@@ -176,7 +176,7 @@ module.exports = (name, options) => {
 											current = current.slice(1);
 										}
 									}
-									// Points of an innerpolygon should be organized clockwise
+									// points of an innerpolygon should be organized clockwise
 									if (_isRing(line)) {
 										if (!_isClockwise(line)) line.reverse();
 										innerPolygons.push(line);
@@ -185,8 +185,8 @@ module.exports = (name, options) => {
 							}
 							
 							// link inner polygons to outer containers
-							function _ptInsidePolygon(pt, polygon) {
-								const lngIdx = 0, latIdx = 1;
+							function _ptInsidePolygon(pt, polygon, lngIdx, latIdx) {
+								lngIdx = lngIdx || 0, latIdx = latIdx || 1;
 								let result = false;
 								for (let i = 0, j = polygon.length - 1; i < polygon.length; j = i++) {
 									if ((polygon[i][lngIdx] <= pt[lngIdx] && pt[lngIdx] < polygon[j][lngIdx] ||
@@ -203,17 +203,17 @@ module.exports = (name, options) => {
 								compositPolyons[idx].push(outerPolygons[idx]);
 							}
 							
-							let ipoly = null;
-							while (ipoly = innerPolygons.pop()) {
+							let ipg = null;
+							while (ipg = innerPolygons.pop()) {
 								for (let idx in outerPolygons) {
-									if (_ptInsidePolygon(_first(ipoly), outerPolygons[idx])) {
-										compositPolyons[idx].push(ipoly);
+									if (_ptInsidePolygon(_first(ipg), outerPolygons[idx])) {
+										compositPolyons[idx].push(ipg);
 										break;
 									}
 								}
 							}
 							
-							// construct return value (geojson polyon or multipolygon
+							// construct return value (geojson polyon or multipolygon)
 							let geom = {
 								type: 'MultiPolygon',
 								coordinates: compositPolyons
@@ -267,7 +267,7 @@ module.exports = (name, options) => {
 		});
 	}
 	
-	// a much faster way - query from osm (OpenStreetMap)
+	// a much faster way - query from osm (OpenStreetMap), mostly 'coz there is only 1 internet access
 	function _queryFromOpenStreetMap(name) {
 		return new Promise((resolve, reject) => {
 			let options = {
@@ -291,5 +291,5 @@ module.exports = (name, options) => {
 	}
 	
 	if (options && options.source === 'overpass') return _queryFromOverpass(name);
-	else return _queryFromOpenStreetMap(name);
+	return _queryFromOpenStreetMap(name);
 }
