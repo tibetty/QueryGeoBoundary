@@ -35,7 +35,7 @@
 		function _getBoundary(areaId) {
 			return new Promise((resolve, reject) => {
 				let options = {
-					url: 'http://overpass-api.de/api/interpreter',
+					url: 'https://overpass-api.de/api/interpreter',
 					method: 'post',
 					form: {
 						data: `area(${areaId});rel(pivot);out geom;`
