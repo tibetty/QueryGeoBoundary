@@ -1,0 +1,58 @@
+{
+  "_from": "query-geo-boundary@0.1.8",
+  "_id": "query-geo-boundary@0.1.8",
+  "_inBundle": false,
+  "_integrity": "sha512-rpiV03EjIHXNGaAyZ7m84x0BOo03h/wz2WFs5ZHMz2zkVd96pu5tCOCbhxjEYMXL6v7sxNMObIaK9eGq9XlZIA==",
+  "_location": "/query-geo-boundary",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "query-geo-boundary@0.1.8",
+    "name": "query-geo-boundary",
+    "escapedName": "query-geo-boundary",
+    "rawSpec": "0.1.8",
+    "saveSpec": null,
+    "fetchSpec": "0.1.8"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/query-geo-boundary/-/query-geo-boundary-0.1.8.tgz",
+  "_shasum": "aacdc2d30ccb620982d40ad9bb7b0a2c26d46b89",
+  "_spec": "query-geo-boundary@0.1.8",
+  "_where": "/Users/xihua/repos.git/test",
+  "author": {
+    "name": "tibetty"
+  },
+  "bugs": {
+    "url": "https://github.com/tibetty/QueryGeoBoundary/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "request": "^2.88.0",
+    "xml2geojson-lite": "^0.5.1"
+  },
+  "deprecated": false,
+  "description": "A Node.js module to query the geo (administrative area) boundary from OSM nominatim and/or overpass (with a RegExp & Map based XML parser & geojson builder for geo boundary re-construction, <b>3X</b> faster than <a href=\"https://github.com/tyrasd/osmtogeojson\">osmtogeojson</a> only, and almost <b>7X</b> faster than <a href=\"https://github.com/jindw/xmldom\">xmldom</a>, osmtogejson in combination to accomplish the same task)",
+  "homepage": "https://github.com/tibetty/QueryGeoBoundary#readme",
+  "keywords": [
+    "map",
+    "geo",
+    "boundary",
+    "polygon",
+    "geojson"
+  ],
+  "license": "UNLICENSED",
+  "main": "index.js",
+  "name": "query-geo-boundary",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tibetty/QueryGeoBoundary.git"
+  },
+  "scripts": {
+    "test": "test.js"
+  },
+  "version": "0.1.9"
+}
