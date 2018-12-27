@@ -45,8 +45,6 @@
 
 				request(options, (error, response, body) => {
 					if (!error && response.statusCode === 200) {
-
-						body = body.replace(/^\s+|\s+$/mg, '').replace(/[\n\r]/g, '');
 						try {
 							const xmlToGeojson = require('xml2geojson-lite');
 							resolve(xmlToGeojson(body));

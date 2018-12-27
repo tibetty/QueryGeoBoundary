@@ -1,5 +1,5 @@
 # QueryGeoBoundary
-A Node.js module to query the geo (administrative area) boundary from OSM nominatim and/or overpass (with a RegExp & Map based XML parser & geojson builder for geo boundary reconstruction, **3X** faster than [osmtogeojson](https://github.com/tyrasd/osmtogeojson) only, and almost **7X** faster than [xmldom](https://github.com/jindw/xmldom), *osmtogeojson* in combination to accomplish the same task)
+A Node.js module to query the geo (administrative area) boundary from OSM nominatim and/or overpass.
 
 # Usage
 ```js
@@ -16,7 +16,7 @@ queryGeoBoundary(`${geo_name}`).then(boundaries => {
   - *`geoName`*: name of the geo you want to obtain its boundary
   - *`options`*: optional. only support `source` option right now, you can use `{source: 'overpass'}` to mandata it to go through [overpass](https://overpass-api.de/) service (very slow, and has concurrency limitation), by default (and highly-recommended) it will use openstreetmap [nominatim](https://nominatim.openstreetmap.org/) service.
 
-**Return**: an array of osm places with boundary geojson (the place attributes include displayname, lat/lon, boundingbox, and the boundary geojson under "geojson"), a typical result is as below:
+**Return**: an array of osm places with boundary geojson (the place attributes include displayname, lat/lon, boundingbox, and the boundary geojson under "geojson"). A typical result is as below:
 ```js
   [{"place_id":"158973269",
   "licence":"Data © OpenStreetMap contributors, ODbL 1.0. http://www.openstreetmap.org/copyright",
@@ -37,3 +37,4 @@ queryGeoBoundary(`${geo_name}`).then(boundaries => {
   
 # Dependency
   - request - basic version and basic function (can be easily replaced by built-in http module)
+  - xml2geojson-lite - a RegExp and Map accelerated XML parsing & geojson reconstruction utility, about **8X** faster than [xmldom](https://github.com/jindw/xmldom), *osmtogeojson* in combination to accomplish the same task
