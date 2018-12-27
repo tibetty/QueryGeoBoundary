@@ -1,7 +1,9 @@
-# QueryGeoBoundary
-A Node.js module to query the geo (administrative area) boundary from OSM nominatim and/or overpass.
+QueryGeoBoundary
+---
+A Node.js library to query the geo (administrative area) boundary from OSM nominatim and/or overpass.
 
-# Usage
+Usage
+---
 ```js
 const queryGeoBoundary = require('query-geo-boundary');
 queryGeoBoundary(`${geo_name}`).then(boundaries => {
@@ -11,7 +13,8 @@ queryGeoBoundary(`${geo_name}`).then(boundaries => {
 });
 ```
 
-# API
+API
+---
 **Prototype**: `queryGeoBoundary(geoName, options)`
   - *`geoName`*: name of the geo you want to obtain its boundary
   - *`options`*: optional. only support `source` option right now, you can use `{source: 'overpass'}` to mandata it to go through [overpass](https://overpass-api.de/) service (very slow, and has concurrency limitation), by default (and highly-recommended) it will use openstreetmap [nominatim](https://nominatim.openstreetmap.org/) service.
@@ -32,9 +35,11 @@ queryGeoBoundary(`${geo_name}`).then(boundaries => {
 ```
 **Notice**: 'coz it's very common for an administrative uint has the same name with the others, if you want to get the boundary of exactly that place, please supply as much as possible hierarchical adminstrative information in name, e.g., using "Ikeda, Hokkaido" rather than "Ikeda", or you can solve this kind of ambiguity by introducing human interference.
 
-# Node.JS version
-  - 4.x+ with major ES 6 features supports
+Node.JS Requirement
+---
+  - Node.JS 4.x+ with ES6 features supports
   
-# Dependency
+Dependency
+---
   - request - basic version and basic function (can be easily replaced by built-in http module)
   - xml2geojson-lite - a RegExp and Map accelerated XML parsing & geojson reconstruction utility, about **8X** faster than [xmldom](https://github.com/jindw/xmldom), *osmtogeojson* in combination to accomplish the same task
