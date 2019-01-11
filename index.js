@@ -2,10 +2,11 @@
 	'use strict';
 
 	const request = require('request'),
-		http = require('http');
+		http = require('http'),
+		osm2geojson = require('osm2geojson-lite');
 
 	// to minic accesses from a browser so as to avoid being blocked
-	const headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36'};
+	const headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'};
 	
 	// a slower way - query from overpass
 	function queryFromOverpass(name) {
@@ -46,8 +47,7 @@
 				request(options, (error, response, body) => {
 					if (!error && response.statusCode === 200) {
 						try {
-							const xmlToGeojson = require('xml2geojson-lite');
-							resolve(xmlToGeojson(body));
+							resolve(osm2geojson(body));
 						} catch (e) {
 							reject(e);
 						}

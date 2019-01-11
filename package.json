@@ -31,8 +31,8 @@
   },
   "bundleDependencies": false,
   "dependencies": {
-    "request": "^2.88.0",
-    "xml2geojson-lite": "latest"
+    "osm2geojson-lite": "^0.4.0",
+    "request": "^2.88.0"
   },
   "deprecated": false,
   "description": "A Node.js module to query the geo (administrative area) boundary from OSM nominatim and/or overpass (with a RegExp & Map based XML parser & geojson builder for geo boundary re-construction, <b>3X</b> faster than <a href=\"https://github.com/tyrasd/osmtogeojson\">osmtogeojson</a> only, and almost <b>7X</b> faster than <a href=\"https://github.com/jindw/xmldom\">xmldom</a>, osmtogejson in combination to accomplish the same task)",
