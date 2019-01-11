@@ -42,4 +42,4 @@ Node.JS Requirement
 Dependency
 ---
   - [request](https://github.com/request/request) - basic version and basic function (can be easily replaced by built-in http module)
-  - [xml2geojson-lite](https://github.com/tibetty/xml2geojson-lite) - a RegExp and Map accelerated XML parsing & geojson reconstruction utility, about **8X** faster than [xmldom](https://github.com/jindw/xmldom), [osmtogeojson](https://github.com/tyrasd/osmtogeojson) in combination to accomplish the same task
+  - [osm2geojson-lite](https://www.npmjs.com/package/osm2geojson-lite) - a regex and map accelerated xml parsing & geojson reconstruction utility, much faster than [xmldom](https://github.com/jindw/xmldom), [osmtogeojson](https://github.com/tyrasd/osmtogeojson) in combination to convert an OSM XML to geojson
