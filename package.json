@@ -31,7 +31,7 @@
   },
   "bundleDependencies": false,
   "dependencies": {
-    "osm2geojson-lite": "^0.4.0",
+    "osm2geojson-lite": "^0.8.5",
     "request": "^2.88.0"
   },
   "deprecated": false,
@@ -52,7 +52,7 @@
     "url": "git+https://github.com/tibetty/QueryGeoBoundary.git"
   },
   "scripts": {
-    "test": "test.js"
+    "test": "node test.js"
   },
   "version": "0.3.5"
 }
