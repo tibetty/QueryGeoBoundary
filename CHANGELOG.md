@@ -6,6 +6,11 @@ All notable changes to this project are documented in this file. The format foll
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-11-20
+
+The `overpass` source works again and survives overloaded public instances; the package is
+rewritten in TypeScript with ESM and CommonJS builds, and drops the deprecated `request` client.
+
 ### Upgrading
 
 - Requires Node.js 22 or later.
@@ -39,7 +44,8 @@ All notable changes to this project are documented in this file. The format foll
   `form-data` advisory are gone ([#2]).
 - The package is MIT-licensed; `package.json` no longer carries npm-install metadata ([#1]).
 
-[Unreleased]: https://github.com/tibetty/QueryGeoBoundary/compare/v0.3.6...HEAD
+[Unreleased]: https://github.com/tibetty/QueryGeoBoundary/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/tibetty/QueryGeoBoundary/releases/tag/v1.0.0
 [#1]: https://github.com/tibetty/QueryGeoBoundary/issues/1
 [#2]: https://github.com/tibetty/QueryGeoBoundary/issues/2
 [#3]: https://github.com/tibetty/QueryGeoBoundary/issues/3
