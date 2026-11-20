@@ -15,20 +15,22 @@ All notable changes to this project are documented in this file. The format foll
 
 ### Added
 
+- `overpassUrl` option; the `overpass` source falls back to overpass.private.coffee and
+  maps.mail.ru and backs off 15 s, then 30 s, when every endpoint is overloaded ([#17]).
 - TypeScript source; ESM and CommonJS builds with declarations, including the
   `QueryGeoBoundaryOptions` and `GeoBoundaryPlace` types ([#15]).
 - `userAgent` option sets the User-Agent sent to Nominatim and Overpass ([#4]).
 
 ### Fixed
 
-- The `overpass` source sent every boundary request at once and tripped Overpass's per-client
-  rate limit (HTTP 429) on ambiguous names. Requests now run one at a time ([#6]).
+- The `overpass` source returned no boundary: it built the wrong area id from Nominatim's
+  numeric `osm_id` ([#3]), fired one request per relation at once and tripped the rate limit
+  ([#6]), and failed on the first overloaded answer. It now fetches all boundaries in one
+  `rel(id:...)` query with a 60 s server timeout ([#17]).
 - Failures reject with an `Error` naming the service and HTTP status (`err.status`) instead of a
   bare status string; a non-JSON Nominatim body rejects instead of throwing ([#5]).
 - Requests sent a spoofed Chrome User-Agent, which Overpass rejects with HTTP 406 and the
   Nominatim usage policy forbids. The default now identifies the library ([#4]).
-- The `overpass` source queried the wrong area when Nominatim returned a numeric `osm_id`,
-  which it now always does, and for 9-digit relation ids ([#3]).
 
 ### Changed
 
@@ -46,3 +48,4 @@ All notable changes to this project are documented in this file. The format foll
 [#6]: https://github.com/tibetty/QueryGeoBoundary/issues/6
 [#7]: https://github.com/tibetty/QueryGeoBoundary/issues/7
 [#15]: https://github.com/tibetty/QueryGeoBoundary/issues/15
+[#17]: https://github.com/tibetty/QueryGeoBoundary/issues/17

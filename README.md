@@ -21,7 +21,8 @@ API
 **Prototype**: `queryGeoBoundary(geoName, options)`
   - *`geoName`*: name of the geo you want to obtain its boundary
   - *`options`*: optional.
-    - `source`: `'nominatim'` (default, recommended) queries [Nominatim](https://nominatim.openstreetmap.org/) once with `polygon_geojson`; `'overpass'` looks the place up on Nominatim, then fetches each boundary from [Overpass](https://overpass-api.de/) (much slower, and rate-limited).
+    - `source`: `'nominatim'` (default, recommended) queries [Nominatim](https://nominatim.openstreetmap.org/) once with `polygon_geojson`. `'overpass'` looks the place up on Nominatim, then fetches all matching boundaries from [Overpass](https://wiki.openstreetmap.org/wiki/Overpass_API) in one `rel(id:...)` query. Public Overpass instances are often at capacity: on HTTP 429/5xx, a network error or a 90 s timeout, the next endpoint is tried, and after a failed round over all of them the lookup waits 15 s, then 30 s, before trying again.
+    - `overpassUrl`: Overpass endpoint or endpoints to try in order. Defaults to overpass-api.de, overpass.private.coffee and maps.mail.ru. Point it at your own instance for heavy use, as the public instances ask.
     - `userAgent`: the User-Agent sent to both services. Defaults to `query-geo-boundary/<version> (+https://github.com/tibetty/QueryGeoBoundary)`. The [Nominatim usage policy](https://operations.osmfoundation.org/policies/nominatim/) asks applications to identify themselves, so set this to your app's name and contact.
 
 **Return**: a promise of the matching OSM relations (`GeoBoundaryPlace[]`), as Nominatim describes them, with the boundary under `geojson`. With the `nominatim` source, `geojson` is Nominatim's geometry; with `overpass`, it is the [osm2geojson-lite](https://www.npmjs.com/package/osm2geojson-lite) conversion of the relation. A typical result:
