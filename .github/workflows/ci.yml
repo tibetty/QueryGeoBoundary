@@ -29,5 +29,29 @@ jobs:
       - name: Install
         run: npm ci
 
-      - name: Test
-        run: npm test
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Test with coverage
+        run: npm run coverage
+
+  package:
+    name: Package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Check exports and types
+        run: npm run check:package
