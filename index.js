@@ -41,15 +41,12 @@ async function queryFromOverpass(name, opts) {
 	}
 
 	const areas = await searchRelations(name, {}, opts);
-	const promised = [];
+	// One request at a time: Overpass grants each client only a few concurrent slots.
 	for (let area of areas) {
 		// Overpass derives an area id from a relation id by adding this offset.
 		const RELATION_AREA_OFFSET = 3600000000;
-		promised.push(getBoundary(RELATION_AREA_OFFSET + Number(area.osm_id)));
+		area.geojson = await getBoundary(RELATION_AREA_OFFSET + Number(area.osm_id));
 	}
-	const geojsons = await Promise.all(promised);
-	for (let idx in areas)
-		areas[idx].geojson = geojsons[idx];
 	return areas;
 }
 
