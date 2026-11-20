@@ -37,11 +37,10 @@ API
 
 Node.JS Requirement
 ---
-  - Node.JS 4.x+ with ES6 features supports
+  - Node.js 18+ (uses the built-in `fetch`)
   
 Dependency
 ---
-  - [request](https://github.com/request/request) - basic version and basic function (can be easily replaced by built-in http module)
   - [osm2geojson-lite](https://www.npmjs.com/package/osm2geojson-lite) - a regex and map accelerated xml parsing & geojson reconstruction utility, much faster than [xmldom](https://github.com/jindw/xmldom), [osmtogeojson](https://github.com/tyrasd/osmtogeojson) in combination to convert an OSM XML to geojson
 
 License
