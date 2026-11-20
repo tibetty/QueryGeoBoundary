@@ -1,6 +1,6 @@
 {
   "name": "query-geo-boundary",
-  "version": "0.3.6",
+  "version": "1.0.0",
   "description": "Query the boundary of an administrative area from OpenStreetMap Nominatim or Overpass as GeoJSON",
   "type": "module",
   "main": "dist/index.cjs",
