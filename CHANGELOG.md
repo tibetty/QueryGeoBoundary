@@ -6,6 +6,11 @@ All notable changes to this project are documented in this file. The format foll
 
 ## [Unreleased]
 
+### Fixed
+
+- The `overpass` source queried the wrong area when Nominatim returned a numeric `osm_id`,
+  which it now always does, and for 9-digit relation ids ([#3]).
+
 ### Changed
 
 - HTTP requests use Node's built-in `fetch`; the deprecated `request` client and its critical
@@ -15,3 +20,4 @@ All notable changes to this project are documented in this file. The format foll
 [Unreleased]: https://github.com/tibetty/QueryGeoBoundary/compare/v0.3.6...HEAD
 [#1]: https://github.com/tibetty/QueryGeoBoundary/issues/1
 [#2]: https://github.com/tibetty/QueryGeoBoundary/issues/2
+[#3]: https://github.com/tibetty/QueryGeoBoundary/issues/3

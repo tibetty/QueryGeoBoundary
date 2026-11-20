@@ -33,9 +33,9 @@ async function queryFromOverpass(name) {
 	const areas = await searchRelations(name);
 	const promised = [];
 	for (let area of areas) {
-		const AREA_ID_PROTO = '3600000000';
-		let areaId = `${AREA_ID_PROTO.substring(0, AREA_ID_PROTO.length - area.osm_id.length)}${area.osm_id}`;
-		promised.push(getBoundary(areaId));
+		// Overpass derives an area id from a relation id by adding this offset.
+		const RELATION_AREA_OFFSET = 3600000000;
+		promised.push(getBoundary(RELATION_AREA_OFFSET + Number(area.osm_id)));
 	}
 	const geojsons = await Promise.all(promised);
 	for (let idx in areas)
