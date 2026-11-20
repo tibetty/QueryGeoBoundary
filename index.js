@@ -9,22 +9,32 @@ const OVERPASS_URL = 'https://overpass-api.de/api/interpreter';
 // Nominatim's usage policy requires an identifying User-Agent; Overpass rejects spoofed browser ones.
 const DEFAULT_USER_AGENT = `query-geo-boundary/${require('./package.json').version} (+https://github.com/tibetty/QueryGeoBoundary)`;
 
-async function fetchText(url, init, opts) {
+async function fetchText(service, url, init, opts) {
 	const response = await fetch(url, {...init, headers: {'User-Agent': opts.userAgent || DEFAULT_USER_AGENT}});
-	if (response.status !== 200) throw http.STATUS_CODES[response.status];
+	if (response.status !== 200) {
+		const err = new Error(`${service} request failed: HTTP ${response.status} ${http.STATUS_CODES[response.status] || ''}`.trim());
+		err.status = response.status;
+		throw err;
+	}
 	return response.text();
 }
 
 async function searchRelations(name, params, opts) {
 	const url = `${NOMINATIM_URL}?${new URLSearchParams({format: 'json', q: `${name}`, ...params})}`;
-	const places = JSON.parse(await fetchText(url, {}, opts));
+	const body = await fetchText('Nominatim', url, {}, opts);
+	let places;
+	try {
+		places = JSON.parse(body);
+	} catch (cause) {
+		throw new Error('Nominatim returned an invalid JSON response', {cause});
+	}
 	return places.filter(place => place.osm_type === 'relation');
 }
 
 // a slower way - query from overpass
 async function queryFromOverpass(name, opts) {
 	function getBoundary(areaId) {
-		return fetchText(OVERPASS_URL, {
+		return fetchText('Overpass', OVERPASS_URL, {
 			method: 'POST',
 			body: new URLSearchParams({data: `area(${areaId});rel(pivot);out geom;`}),
 		}, opts).then(body => osm2geojson(body));

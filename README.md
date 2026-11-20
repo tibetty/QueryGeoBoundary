@@ -35,6 +35,8 @@ API
   "icon":"https://nominatim.openstreetmap.org/images/mapicons/poi_boundary_administrative.p.20.png",
   "geojson":{"type":"Polygon","coordinates":[[[118.9952393,36.0120809],...,[118.9952393,36.0120809]]]}}]
 ```
+**Errors**: the promise rejects with an `Error`. HTTP failures name the service and status in the message and set `err.status` (e.g. `429` when Overpass rate-limits you).
+
 **Notice**: 'coz it's very common for an administrative uint has the same name with the others, if you want to get the boundary of exactly that place, please supply as much as possible hierarchical adminstrative information in name, e.g., using "Ikeda, Hokkaido" rather than "Ikeda", or you can solve this kind of ambiguity by introducing human interference.
 
 Node.JS Requirement

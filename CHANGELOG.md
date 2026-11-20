@@ -12,6 +12,8 @@ All notable changes to this project are documented in this file. The format foll
 
 ### Fixed
 
+- Failures reject with an `Error` naming the service and HTTP status (`err.status`) instead of a
+  bare status string; a non-JSON Nominatim body rejects instead of throwing ([#5]).
 - Requests sent a spoofed Chrome User-Agent, which Overpass rejects with HTTP 406 and the
   Nominatim usage policy forbids. The default now identifies the library ([#4]).
 - The `overpass` source queried the wrong area when Nominatim returned a numeric `osm_id`,
@@ -28,3 +30,4 @@ All notable changes to this project are documented in this file. The format foll
 [#2]: https://github.com/tibetty/QueryGeoBoundary/issues/2
 [#3]: https://github.com/tibetty/QueryGeoBoundary/issues/3
 [#4]: https://github.com/tibetty/QueryGeoBoundary/issues/4
+[#5]: https://github.com/tibetty/QueryGeoBoundary/issues/5
