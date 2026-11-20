@@ -1,7 +1,11 @@
+import type { FeatureCollection } from 'geojson';
+import osm2geojson from 'osm2geojson-lite';
 import { vi } from 'vitest';
 
 export const NOMINATIM = 'https://nominatim.openstreetmap.org/search';
 export const OVERPASS = 'https://overpass-api.de/api/interpreter';
+export const OVERPASS_COFFEE = 'https://overpass.private.coffee/api/interpreter';
+export const OVERPASS_VK = 'https://maps.mail.ru/osm/tools/overpass/api/interpreter';
 
 export interface FetchCall {
     url: string;
@@ -29,20 +33,31 @@ export function place(osmId: number | string, extra: Record<string, unknown> = {
     return { place_id: Number(osmId) + 1, osm_type: 'relation', osm_id: osmId, display_name: `place ${osmId}`, ...extra };
 }
 
-/** An Overpass answer holding one closed boundary relation. */
-export function overpassXml(relId: number): string {
-    return `<?xml version="1.0" encoding="UTF-8"?>
-<osm version="0.6">
-  <relation id="${relId}">
-    <bounds minlat="0" minlon="0" maxlat="1" maxlon="1"/>
-    <member type="way" ref="1" role="outer">
-      <nd lat="0" lon="0"/><nd lat="0" lon="1"/><nd lat="1" lon="1"/><nd lat="0" lon="0"/>
+/** One closed boundary relation, as Overpass returns it with `out geom`. */
+function relationXml(relId: number): string {
+    return `  <relation id="${relId}">
+    <bounds minlat="0" minlon="0" maxlat="${relId}" maxlon="${relId}"/>
+    <member type="way" ref="${relId}" role="outer">
+      <nd lat="0" lon="0"/><nd lat="0" lon="${relId}"/><nd lat="${relId}" lon="${relId}"/><nd lat="0" lon="0"/>
     </member>
     <tag k="boundary" v="administrative"/>
     <tag k="type" v="boundary"/>
-  </relation>
+  </relation>`;
+}
+
+/** An Overpass answer holding one boundary relation per id. */
+export function overpassXml(...relIds: number[]): string {
+    return `<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6">
+${relIds.map(relationXml).join('\n')}
 </osm>`;
 }
 
-export const areaQuery = (call: FetchCall) => new URLSearchParams(String(call.init.body)).get('data');
+/** The geometry query-geo-boundary attaches for relation `relId` of an Overpass answer. */
+export function geometryOf(xml: string, relId: number) {
+    const collection = osm2geojson(xml, { completeFeature: true }) as FeatureCollection;
+    return collection.features.find(f => f.id === `relation/${relId}`)!.geometry;
+}
+
+export const overpassQuery = (call: FetchCall) => new URLSearchParams(String(call.init.body)).get('data');
 export const userAgent = (call: FetchCall) => new Headers(call.init.headers).get('user-agent');
