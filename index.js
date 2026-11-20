@@ -1,4 +1,4 @@
-﻿module.exports = (name, opts) => {
+module.exports = (name, opts) => {
 	'use strict';
 
 	const request = require('request'),
