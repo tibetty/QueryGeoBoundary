@@ -6,8 +6,17 @@ All notable changes to this project are documented in this file. The format foll
 
 ## [Unreleased]
 
+### Upgrading
+
+- Requires Node.js 22 or later.
+- `queryGeoBoundary` is a named export (and the default export). CommonJS callers change
+  `require('query-geo-boundary')(name)` to `require('query-geo-boundary').queryGeoBoundary(name)`.
+- Rejections are `Error`s, not status strings; HTTP failures carry `err.status`.
+
 ### Added
 
+- TypeScript source; ESM and CommonJS builds with declarations, including the
+  `QueryGeoBoundaryOptions` and `GeoBoundaryPlace` types ([#15]).
 - `userAgent` option sets the User-Agent sent to Nominatim and Overpass ([#4]).
 
 ### Fixed
@@ -36,3 +45,4 @@ All notable changes to this project are documented in this file. The format foll
 [#5]: https://github.com/tibetty/QueryGeoBoundary/issues/5
 [#6]: https://github.com/tibetty/QueryGeoBoundary/issues/6
 [#7]: https://github.com/tibetty/QueryGeoBoundary/issues/7
+[#15]: https://github.com/tibetty/QueryGeoBoundary/issues/15
