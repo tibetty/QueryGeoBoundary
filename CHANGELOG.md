@@ -6,8 +6,14 @@ All notable changes to this project are documented in this file. The format foll
 
 ## [Unreleased]
 
+### Added
+
+- `userAgent` option sets the User-Agent sent to Nominatim and Overpass ([#4]).
+
 ### Fixed
 
+- Requests sent a spoofed Chrome User-Agent, which Overpass rejects with HTTP 406 and the
+  Nominatim usage policy forbids. The default now identifies the library ([#4]).
 - The `overpass` source queried the wrong area when Nominatim returned a numeric `osm_id`,
   which it now always does, and for 9-digit relation ids ([#3]).
 
@@ -21,3 +27,4 @@ All notable changes to this project are documented in this file. The format foll
 [#1]: https://github.com/tibetty/QueryGeoBoundary/issues/1
 [#2]: https://github.com/tibetty/QueryGeoBoundary/issues/2
 [#3]: https://github.com/tibetty/QueryGeoBoundary/issues/3
+[#4]: https://github.com/tibetty/QueryGeoBoundary/issues/4

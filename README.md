@@ -17,7 +17,9 @@ API
 ---
 **Prototype**: `queryGeoBoundary(geoName, options)`
   - *`geoName`*: name of the geo you want to obtain its boundary
-  - *`options`*: optional. only support `source` option right now, you can use `{source: 'overpass'}` to mandata it to go through [overpass](https://overpass-api.de/) service (very slow, and has concurrency limitation), by default (and highly-recommended) it will use openstreetmap [nominatim](https://nominatim.openstreetmap.org/) service.
+  - *`options`*: optional.
+    - `source`: `'nominatim'` (default, recommended) queries [Nominatim](https://nominatim.openstreetmap.org/) once with `polygon_geojson`; `'overpass'` looks the place up on Nominatim, then fetches each boundary from [Overpass](https://overpass-api.de/) (much slower, and rate-limited).
+    - `userAgent`: the User-Agent sent to both services. Defaults to `query-geo-boundary/<version> (+https://github.com/tibetty/QueryGeoBoundary)`. The [Nominatim usage policy](https://operations.osmfoundation.org/policies/nominatim/) asks applications to identify themselves, so set this to your app's name and contact.
 
 **Return**: an array of osm places with boundary geojson (the place attributes include displayname, lat/lon, boundingbox, and the boundary geojson under "geojson"). A typical result is as below:
 ```js
