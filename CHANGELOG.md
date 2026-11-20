@@ -12,6 +12,8 @@ All notable changes to this project are documented in this file. The format foll
 
 ### Fixed
 
+- The `overpass` source sent every boundary request at once and tripped Overpass's per-client
+  rate limit (HTTP 429) on ambiguous names. Requests now run one at a time ([#6]).
 - Failures reject with an `Error` naming the service and HTTP status (`err.status`) instead of a
   bare status string; a non-JSON Nominatim body rejects instead of throwing ([#5]).
 - Requests sent a spoofed Chrome User-Agent, which Overpass rejects with HTTP 406 and the
@@ -31,3 +33,4 @@ All notable changes to this project are documented in this file. The format foll
 [#3]: https://github.com/tibetty/QueryGeoBoundary/issues/3
 [#4]: https://github.com/tibetty/QueryGeoBoundary/issues/4
 [#5]: https://github.com/tibetty/QueryGeoBoundary/issues/5
+[#6]: https://github.com/tibetty/QueryGeoBoundary/issues/6
