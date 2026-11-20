@@ -6,31 +6,31 @@ const osm2geojson = require('osm2geojson-lite');
 const NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search';
 const OVERPASS_URL = 'https://overpass-api.de/api/interpreter';
 
-// to minic accesses from a browser so as to avoid being blocked
-const headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36'};
+// Nominatim's usage policy requires an identifying User-Agent; Overpass rejects spoofed browser ones.
+const DEFAULT_USER_AGENT = `query-geo-boundary/${require('./package.json').version} (+https://github.com/tibetty/QueryGeoBoundary)`;
 
-async function fetchText(url, init) {
-	const response = await fetch(url, {...init, headers});
+async function fetchText(url, init, opts) {
+	const response = await fetch(url, {...init, headers: {'User-Agent': opts.userAgent || DEFAULT_USER_AGENT}});
 	if (response.status !== 200) throw http.STATUS_CODES[response.status];
 	return response.text();
 }
 
-async function searchRelations(name, params) {
+async function searchRelations(name, params, opts) {
 	const url = `${NOMINATIM_URL}?${new URLSearchParams({format: 'json', q: `${name}`, ...params})}`;
-	const places = JSON.parse(await fetchText(url));
+	const places = JSON.parse(await fetchText(url, {}, opts));
 	return places.filter(place => place.osm_type === 'relation');
 }
 
 // a slower way - query from overpass
-async function queryFromOverpass(name) {
+async function queryFromOverpass(name, opts) {
 	function getBoundary(areaId) {
 		return fetchText(OVERPASS_URL, {
 			method: 'POST',
 			body: new URLSearchParams({data: `area(${areaId});rel(pivot);out geom;`}),
-		}).then(body => osm2geojson(body));
+		}, opts).then(body => osm2geojson(body));
 	}
 
-	const areas = await searchRelations(name);
+	const areas = await searchRelations(name, {}, opts);
 	const promised = [];
 	for (let area of areas) {
 		// Overpass derives an area id from a relation id by adding this offset.
@@ -44,11 +44,11 @@ async function queryFromOverpass(name) {
 }
 
 // a much faster way - query from osm (OpenStreetMap), mostly 'coz there is only 1 internet access
-function queryFromOpenStreetMap(name) {
-	return searchRelations(name, {polygon_geojson: 1});
+function queryFromOpenStreetMap(name, opts) {
+	return searchRelations(name, {polygon_geojson: 1}, opts);
 }
 
-module.exports = (name, opts) => {
-	if (opts && opts.source === 'overpass') return queryFromOverpass(name);
-	return queryFromOpenStreetMap(name);
+module.exports = (name, opts = {}) => {
+	if (opts.source === 'overpass') return queryFromOverpass(name, opts);
+	return queryFromOpenStreetMap(name, opts);
 };
