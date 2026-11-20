@@ -41,7 +41,7 @@ API
 
 Node.JS Requirement
 ---
-  - Node.js 18+ (uses the built-in `fetch`)
+  - Node.js 22+
   
 Dependency
 ---
