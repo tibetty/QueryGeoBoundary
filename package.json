@@ -31,7 +31,7 @@
   "scripts": {
     "build": "rolldown -c && node scripts/copy-dts.mjs",
     "test": "npm run build && vitest run",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "npm run build && tsc --noEmit",
     "coverage": "npm run build && vitest run --coverage",
     "check:package": "publint --strict && attw --pack . --profile node16",
     "prepublishOnly": "npm run typecheck && npm run coverage && npm run check:package"
