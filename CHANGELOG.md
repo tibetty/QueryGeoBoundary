@@ -23,8 +23,9 @@ All notable changes to this project are documented in this file. The format foll
 
 ### Changed
 
+- Depends on `osm2geojson-lite` ^3.0.0 (was ^0.8.5), which requires Node.js 22 or later ([#7]).
 - HTTP requests use Node's built-in `fetch`; the deprecated `request` client and its critical
-  `form-data` advisory are gone. Requires Node.js 18 or later ([#2]).
+  `form-data` advisory are gone ([#2]).
 - The package is MIT-licensed; `package.json` no longer carries npm-install metadata ([#1]).
 
 [Unreleased]: https://github.com/tibetty/QueryGeoBoundary/compare/v0.3.6...HEAD
@@ -34,3 +35,4 @@ All notable changes to this project are documented in this file. The format foll
 [#4]: https://github.com/tibetty/QueryGeoBoundary/issues/4
 [#5]: https://github.com/tibetty/QueryGeoBoundary/issues/5
 [#6]: https://github.com/tibetty/QueryGeoBoundary/issues/6
+[#7]: https://github.com/tibetty/QueryGeoBoundary/issues/7
